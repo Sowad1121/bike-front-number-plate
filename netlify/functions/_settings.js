@@ -1,0 +1,4 @@
+const DEFAULTS=Object.freeze({plate_price:450,advance_percent:50,inside_dhaka_delivery:70,outside_dhaka_delivery:120,bkash_number:'01753303971'});
+function validate(x){const o={};for(const k of ['plate_price','advance_percent','inside_dhaka_delivery','outside_dhaka_delivery']){if(typeof x[k]!=='number'||!Number.isInteger(x[k])||x[k]<0||x[k]>100000)throw Object.assign(Error('Invalid '+k),{status:400});o[k]=x[k];}if(o.plate_price<1||o.advance_percent>100)throw Object.assign(Error('Invalid pricing'),{status:400});if(typeof x.bkash_number!=='string'||!/^01[0-9]{9}$/.test(x.bkash_number))throw Object.assign(Error('Invalid bKash number'),{status:400});o.bkash_number=x.bkash_number;return o;}
+async function getSettings(db){const snap=await db.collection('site_settings').doc('public').get();return {...DEFAULTS,...(snap.exists?snap.data():{})};}
+module.exports={DEFAULTS,validate,getSettings};

@@ -1,0 +1,2 @@
+// Rename to firebase-config.js and enter your existing Firebase WEB app config.
+window.FIREBASE_CONFIG={apiKey:'REPLACE',authDomain:'REPLACE',projectId:'REPLACE',appId:'REPLACE'};
