@@ -1,5 +1,5 @@
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-const firebaseConfig = {
+window.FIREBASE_CONFIG = {
   apiKey: "AIzaSyBR3EKlVlRAVvM4N11ZSJpOdQy1tREx55I",
   authDomain: "bike-front-number-plate.firebaseapp.com",
   projectId: "bike-front-number-plate",
