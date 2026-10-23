@@ -31,7 +31,11 @@
 <script src="/invoice.js"></script>
 <script type="module" src="/invoice-dashboard.js"></script>
 <script type="module">
-import {initializeApp} from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js';
+import {
+  initializeApp,
+  getApps,
+  getApp
+} from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js';
 import {getAuth,signInWithEmailAndPassword,onAuthStateChanged,signOut,sendEmailVerification} from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js';
 const $=id=>document.getElementById(id);const say=s=>$('msg').textContent=s;let auth;let allOrders=[];
 const payStates=['pending','verified','rejected'],orderStates=['new','processing','shipped','delivered','cancelled'];
@@ -47,7 +51,10 @@ $('logout').onclick=()=>signOut(auth);$('reload').onclick=load;
 $('sendVerification').onclick=async()=>{try{await sendEmailVerification(auth.currentUser);say('Verification email sent. Check inbox and spam.')}catch(e){say(e.message)}};
 $('checkVerification').onclick=async()=>{try{const u=auth.currentUser;if(!u)throw Error('Sign in first');await u.reload();await u.getIdToken(true);updateVerification(u);if(u.emailVerified)await load();else say('Email is not verified yet.')}catch(e){say(e.message)}};
 for(const id of ['search','payFilter','orderFilter'])$(id).addEventListener(id==='search'?'input':'change',render);
-if(!window.FIREBASE_CONFIG||!window.FIREBASE_CONFIG.apiKey||window.FIREBASE_CONFIG.apiKey.startsWith('REPLACE')){say('Firebase configuration missing. Check /firebase-config.js.')}else{try{const firebaseApp = initializeApp(window.FIREBASE_CONFIG);
+if(!window.FIREBASE_CONFIG||!window.FIREBASE_CONFIG.apiKey||window.FIREBASE_CONFIG.apiKey.startsWith('REPLACE')){say('Firebase configuration missing. Check /firebase-config.js.')}else{try{const firebaseApp = getApps().length
+  ? getApp()
+  : initializeApp(window.FIREBASE_CONFIG);
+
 auth = getAuth(firebaseApp);onAuthStateChanged(auth,async u=>{$('login').classList.toggle('hide',!!u);$('dashboard').classList.toggle('hide',!u);$('reload').classList.toggle('hide',!u);$('logout').classList.toggle('hide',!u);updateVerification(u);if(u){await load()}else{allOrders=[];say('')}})}catch(e){say('Firebase setup error: '+e.message)}}
 </script>
 </body></html>
