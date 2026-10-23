@@ -13,8 +13,33 @@
 <section class="panel" id="login"><h2>🔐 Admin Login</h2><p class="muted">Sign in with your authorized Firebase account.</p><form id="loginForm"><label>Email<input type="email" id="email" autocomplete="username" required></label><label>Password<input type="password" id="password" autocomplete="current-password" required></label><button class="btn" type="submit">Sign In</button></form></section>
 <section class="panel hide" id="verification"><h2>✉ Email Verification</h2><p class="muted" id="verificationStatus">Checking...</p><div class="actions"><button class="btn" id="sendVerification">Send verification email</button><button class="btn secondary" id="checkVerification">I've verified — check again</button></div></section>
 <section id="dashboard" class="hide"><div class="metrics"><div class="metric"><div class="emoji">📦</div><div class="value" id="totalCount">0</div><div class="label">Total Orders</div></div><div class="metric"><div class="emoji">⏳</div><div class="value" id="pendingCount">0</div><div class="label">Pending Payments</div></div><div class="metric"><div class="emoji">✅</div><div class="value" id="verifiedCount">0</div><div class="label">Verified Payments</div></div><div class="metric"><div class="emoji">🚚</div><div class="value" id="deliveredCount">0</div><div class="label">Delivered Orders</div></div></div>
-<section class="panel"><div class="flex"><div><h2>Customer Orders</h2><p class="muted">Latest 100 orders • verify the actual advance in bKash before approving</p></div><span class="count" id="resultsCount"></span></div><div class="filters"><div><label for="search">Search customer or transaction</label><input id="search" placeholder="Name, phone, order ID, transaction ID..."></div><div><label for="payFilter">Payment status</label><select id="payFilter"><option value="all">All payments</option><option value="pending">Pending</option><option value="verified">Verified</option><option value="rejected">Rejected</option></select></div><div><label for="orderFilter">Order status</label><select id="orderFilter"><option value="all">All orders</option><option value="new">New</option><option value="processing">Processing</option><option value="shipped">Shipped</option><option value="delivered">Delivered</option><option value="cancelled">Cancelled</option></select></div></div><div class="orders" id="orders"></div></section></section><p id="msg" role="status" aria-live="polite"></p></main></div>
+<section class="panel"><div class="flex"><div><h2>Customer Orders</h2><p class="muted">Latest 100 orders • verify the actual advance in bKash before approving</p></div><span class="count" id="resultsCount"></span></div><div class="filters"><div><label for="search">Search customer or transaction</label><input id="search" placeholder="Name, phone, order ID, transaction ID..."></div><div><label for="payFilter">Payment status</label><select id="payFilter"><option value="all">All payments</option><option value="pending">Pending</option><option value="verified">Verified</option><option value="rejected">Rejected</option></select></div><div><label for="orderFilter">Order status</label><select id="orderFilter"><option value="all">All orders</option><option value="new">New</option><option value="processing">Processing</option><option value="shipped">Shipped</option><option value="delivered">Delivered</option><option value="cancelled">Cancelled</option></select></div></div><div class="orders" id="orders"></div>
+</section>
+
+<section class="panel" id="confirmedInvoicesPanel">
+  <div class="flex">
+    <div>
+      <h2>🧾 Confirmed Invoices</h2>
+      <p class="muted">
+        Google Sheets confirmed orders and delivery management
+      </p>
+    </div>
+    <button class="btn secondary" id="refreshInvoices" type="button">
+      ↻ Refresh Invoices
+    </button>
+  </div>
+
+  <p class="muted" id="invoiceSyncStatus">
+    Waiting for invoice data...
+  </p>
+
+  <div id="confirmedInvoicesList"></div>
+</section>
+
+</section>
+<p id="msg" role="status" aria-live="polite"></p></main></div>
 <script src="/invoice.js"></script>
+<script src="/invoice-dashboard.js" defer></script>
 <script type="module">
 import {initializeApp} from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js';
 import {getAuth,signInWithEmailAndPassword,onAuthStateChanged,signOut,sendEmailVerification} from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js';
